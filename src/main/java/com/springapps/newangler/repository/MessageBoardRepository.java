@@ -1,4 +1,6 @@
 package com.springapps.newangler.repository;
 
-public interface MessageBoardRepository {
+import org.springframework.data.repository.CrudRepository;
+
+public interface MessageBoardRepository extends CrudRepository {
 }
