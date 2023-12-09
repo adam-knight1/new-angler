@@ -1,4 +1,4 @@
 package com.springapps.newangler.service;
 
-public class MessageService {
+public class MessageBoardService {
 }
