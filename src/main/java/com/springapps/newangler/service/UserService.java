@@ -1,5 +1,7 @@
 package com.springapps.newangler.service;
 
+import com.springapps.newangler.dto.UserDto;
+import com.springapps.newangler.mapper.UserMapper;
 import com.springapps.newangler.repository.UserRepository;
 import com.springapps.newangler.repository.model.UserRecord;
 import com.springapps.newangler.service.model.User;
@@ -17,36 +19,25 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User findByUserId(String userId) {
+    public UserDto findByUserId(String userId) {
         System.out.println("Searching for userId: " + userId);
-        Optional<UserRecord> userRecord = userRepository.findById(userId);
-
-        if (userRecord.isPresent()) {
-            System.out.println("User found: " + userRecord.get());
-            return transformToUser(userRecord.get());
-        } else {
-            System.out.println("User with userId: " + userId + " not found.");
-            return null;
-        }
+        return userRepository.findById(userId)
+                .map(UserMapper::toDto)
+                .orElse(null);
     }
 
-    public User createNewUser(User user) {
-        UserRecord userRecord = new UserRecord();
-        userRecord.setUserId(user.getUserId());
-        userRecord.setEmail(user.getEmail());
-        userRecord.setPassword(user.getPassword());
-        userRecord.setUsername(user.getUsername());
-
+    public UserDto createNewUser(UserDto userDto) {
+        UserRecord userRecord = UserMapper.toEntity(userDto);
         try {
             userRepository.save(userRecord);
-            return user;
+            return userDto; // Optionally, return a new DTO instance
         } catch (Exception e) {
             System.out.println("Unable to save user: " + e.getMessage());
             return null;
         }
     }
 
-    public Optional<User> updateUser(String userId, User updatedUserInfo) {
+    public Optional<UserDto> updateUser(String userId, UserDto updatedUserInfo) {
         Optional<UserRecord> optionalExistingUser = userRepository.findById(userId);
 
         if (optionalExistingUser.isPresent()) {
@@ -55,7 +46,7 @@ public class UserService {
             existingUser.setPassword(updatedUserInfo.getPassword());
             existingUser.setUsername(updatedUserInfo.getUsername());
             userRepository.save(existingUser);
-            return Optional.of(transformToUser(existingUser));
+            return Optional.of(UserMapper.toDto(existingUser));
         }
         return Optional.empty();
     }
@@ -70,10 +61,9 @@ public class UserService {
             return false;
         }
     }
-
-    private User transformToUser(UserRecord userRecord) {
-        return new User(userRecord.getUserId(), userRecord.getUsername(), userRecord.getPassword(), userRecord.getEmail());
-    }
 }
+
+
+
 
 
