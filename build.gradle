@@ -17,14 +17,16 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
-	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+	//implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	//implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+	//testImplementation 'org.springframework.security:spring-security-test'
 	implementation platform('software.amazon.awssdk:bom:2.20.109')
 	implementation 'software.amazon.awssdk:dynamodb'
 	implementation 'software.amazon.awssdk:dynamodb-enhanced'
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+
 
 
 
