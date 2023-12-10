@@ -1,13 +1,15 @@
 package com.springapps.newangler.repository;
 
 import com.springapps.newangler.repository.model.UserRecord;
+import org.springframework.stereotype.Repository;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.enhanced.dynamodb.DynamoDbTable;
 import software.amazon.awssdk.enhanced.dynamodb.Key;
 import software.amazon.awssdk.enhanced.dynamodb.TableSchema;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
 
 import java.util.Optional;
-
+@Repository
 public class UserRepository {
 
         private final DynamoDbTable<UserRecord> userTable;
