@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-//@EnableScan
+@EnableScan
 public interface UserRepository extends CrudRepository<UserRecord, String> {
 
     //possible idea for basic authentication, would require hashing and a secondary index irl

@@ -1,8 +1,12 @@
 package com.springapps.newangler.service;
 
 import com.springapps.newangler.repository.UserRepository;
+import com.springapps.newangler.repository.model.UserRecord;
 import com.springapps.newangler.service.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -81,8 +85,6 @@ public class UserService {
             return false;
         }
     }
-
-
 
     public User transformToUser(UserRecord userRecord) {
         User user = new User();
