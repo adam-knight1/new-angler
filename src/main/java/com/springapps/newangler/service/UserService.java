@@ -17,19 +17,17 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-
     public User findByUserId(String userId) {
         System.out.println("Searching for userId: " + userId);
-        User user = userRepository
-                .findById(userId)
-                .map(u -> new User(u.getUserId(),u.getUsername(), u.getPassword(), u.getEmail()))
-                .orElse(null);
-        if (user == null) {
-            System.out.println("User with userId: " + userId + " not found.");
+        Optional<UserRecord> userRecord = userRepository.findById(userId);
+
+        if (userRecord.isPresent()) {
+            System.out.println("User found: " + userRecord.get());
+            return transformToUser(userRecord.get());
         } else {
-            System.out.println("User found: " + user);
+            System.out.println("User with userId: " + userId + " not found.");
+            return null;
         }
-        return user;
     }
 
     public User createNewUser(User user) {
@@ -39,36 +37,24 @@ public class UserService {
         userRecord.setPassword(user.getPassword());
         userRecord.setUsername(user.getUsername());
 
-        if (userRecord.getUserId() != null ||
-                userRecord.getEmail() != null ||
-                userRecord.getPassword() != null ||
-                userRecord.getUsername() != null) {
-            try {
-                userRepository.save(userRecord);
-                return user;
-            } catch (Exception e) {
-                System.out.println("unable to save user" + e.getMessage());
-                return null;
-            }
-        } else {
+        try {
+            userRepository.save(userRecord);
+            return user;
+        } catch (Exception e) {
+            System.out.println("Unable to save user: " + e.getMessage());
             return null;
         }
     }
 
     public Optional<User> updateUser(String userId, User updatedUserInfo) {
-
         Optional<UserRecord> optionalExistingUser = userRepository.findById(userId);
 
         if (optionalExistingUser.isPresent()) {
             UserRecord existingUser = optionalExistingUser.get();
-
-            // Update the existingUser with updatedUserInfo here
             existingUser.setEmail(updatedUserInfo.getEmail());
             existingUser.setPassword(updatedUserInfo.getPassword());
             existingUser.setUsername(updatedUserInfo.getUsername());
-
             userRepository.save(existingUser);
-
             return Optional.of(transformToUser(existingUser));
         }
         return Optional.empty();
@@ -76,7 +62,6 @@ public class UserService {
 
     public boolean deleteUser(String userId) {
         Optional<UserRecord> optionalUserRecord = userRepository.findById(userId);
-
         if (optionalUserRecord.isPresent()) {
             userRepository.delete(optionalUserRecord.get());
             return true;
@@ -86,14 +71,9 @@ public class UserService {
         }
     }
 
-    public User transformToUser(UserRecord userRecord) {
-        User user = new User();
-        user.setUserId(userRecord.getUserId());
-        user.setEmail(userRecord.getEmail());
-        user.setUsername(userRecord.getUsername());
-        user.setPassword(userRecord.getPassword());
-        return user;
+    private User transformToUser(UserRecord userRecord) {
+        return new User(userRecord.getUserId(), userRecord.getUsername(), userRecord.getPassword(), userRecord.getEmail());
     }
-
 }
+
 
