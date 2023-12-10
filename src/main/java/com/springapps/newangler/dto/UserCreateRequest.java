@@ -3,7 +3,6 @@ package com.springapps.newangler.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UserCreateRequest {
-    //@NotEmpty
     @JsonProperty("username")
     private String username;
 

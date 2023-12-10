@@ -1,12 +1,22 @@
 package com.springapps.newangler.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UserDto {
+        @JsonProperty("userId")
         private String userId;
+
+        @JsonProperty("email")
         private String email;
+
+        @JsonProperty("username")
         private String username;
+
+        @JsonProperty("password")
         private String password;
 
-    public String getUserId() {
+
+        public String getUserId() {
         return userId;
     }
 
